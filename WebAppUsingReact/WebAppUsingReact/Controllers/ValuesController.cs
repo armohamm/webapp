@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAppUsingReact.Models;
+using WebAppUsingReact.Services;
 
 namespace WebAppUsingReact.Controllers
 {
@@ -12,33 +13,32 @@ namespace WebAppUsingReact.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private ICollection<Test> values = new List<Test> {
-            new Test{Id=1, Value= "value1" },
-            new Test{Id=2, Value= "value2" },
-            new Test{Id=3, Value= "value3" },
-            new Test{Id=4, Value= "value4" },
-        };
+        public TestRepository Repository { get; }
+
+        public ValuesController(TestRepository repository)
+        {
+            Repository = repository;
+        }
         // GET: api/Values
         [HttpGet]
         public IEnumerable<Test> Get()
         {
-            return values;
+            return Repository.GetAll();
         }
 
         // GET: api/Values/5
         [HttpGet("{id}", Name = "Get")]
         public Test Get(int id)
         {
-            return values
-                .Where(x => x.Id == id)
-                .FirstOrDefault();
+            return Repository.GetSingle(x => x.Id == id);
         }
 
         // POST: api/Values
         [HttpPost]
         public void Post([FromBody] string value)
         {
-            values.Add(new Test { Id=10, Value=value});
+            Repository.Add(new Test { Value = value });
+            Repository.Commit();
         }
 
         // PUT: api/Values/5

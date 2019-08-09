@@ -37,8 +37,6 @@ export class Value extends Component {
         );
     }
     addValue = (val) => {
-        alert(val.content);
-        console.log(val);
         fetch('api/values',
             {
                 method: 'POST',
@@ -47,6 +45,12 @@ export class Value extends Component {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(val.content)
+            });
+
+        fetch('api/Values/')
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ values: data, loading: false });
             });
     }
     render() {

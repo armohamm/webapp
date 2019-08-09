@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAppUsingReact.Entities.Core;
 
 namespace WebAppUsingReact.Models
 {
-    public class Test
+    public class Test : Entity
     {
-        public int Id { get; set; }
         public string Value { get; set; }
     }
 }
